@@ -56,8 +56,8 @@ mvn -version
 ### 1. Clone or Create Project
 
 ``` bash
-mkdir bookingmx-project
-cd bookingmx-project
+mkdir bookingmx
+cd backend
 ```
 
 ### 2. Build the Project
@@ -288,67 +288,6 @@ curl -X POST http://localhost:8080/api/reservations   -H "Content-Type: applicat
 -   **Service Layer**
 -   **Global Exception Handling**
 
-## Code Documentation
-
-All code is documented with Javadoc following Java conventions.
-
-## Troubleshooting
-
-### Error: "Cannot resolve symbol SpringBootApplication"
-
-**Solution:**
-
-``` bash
-mvn clean install -U
-```
-
-### Error: "Tests compilation failed"
-
-**Cause:** Incorrect Java version
-
-**Solution:** Ensure Java 21 is being used:
-
-``` bash
-java -version
-```
-
-### Error: "Port 8080 already in use"
-
-**Solution:**
-
-``` bash
-# Windows
-netstat -ano | findstr :8080
-taskkill /PID <PID> /F
-
-# Mac/Linux
-lsof -i :8080
-kill -9 <PID>
-```
-
-### Tests Failing Locally
-
-**Solution:**
-
-``` bash
-mvn clean install
-mvn test -X
-```
-
-## Project Metrics
-
-### Lines of Code
-
--   **Production Code:** \~800 lines
--   **Test Code:** \~1,200 lines
--   **Test:Code Ratio:** 1.5:1
-
-### Complexity
-
--   **Average Cyclomatic Complexity:** 2.3
--   **Classes:** 11
--   **Methods:** 45
--   **Tests:** 48
 
 ## Continuous Integration
 
