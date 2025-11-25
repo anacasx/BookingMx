@@ -1,0 +1,4 @@
+com\bookingmx\reservations\repo\ReservationRepositoryTest.class
+com\bookingmx\reservations\service\ReservationServiceTest.class
+com\bookingmx\reservations\controller\ReservationControllerTest.class
+com\bookingmx\reservations\model\ReservationTest.class

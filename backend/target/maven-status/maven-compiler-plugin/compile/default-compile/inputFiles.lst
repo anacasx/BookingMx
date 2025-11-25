@@ -1,0 +1,11 @@
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\controller\ReservationController.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\repo\ReservationRepository.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\exception\BadRequestException.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\model\ReservationStatus.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\dto\ReservationRequest.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\exception\NotFoundException.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\service\ReservationService.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\model\Reservation.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\dto\ReservationResponse.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\exception\ApiExceptionHandler.java
+C:\Users\Xoch\Documents\Repos\BookingMx\backend\src\main\java\com\bookingmx\reservations\BookingMxApplication.java
