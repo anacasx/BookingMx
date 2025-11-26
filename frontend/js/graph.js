@@ -56,7 +56,7 @@ export function getNearbyCities(graph, destination, maxDistanceKm = 250) {
     .map(n => ({ city: n.to, distance: n.distance }));
 }
 
-// Sample dataset (you can replace or expand)
+// Sample dataset
 export const sampleData = {
   cities: [
     "Guadalajara", "Tlaquepaque", "Zapopan", "Tepatitlán", "Lagos de Moreno", "Tala", "Tequila"
