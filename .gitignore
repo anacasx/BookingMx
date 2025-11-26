@@ -1,0 +1,51 @@
+# Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+.settings/
+.project
+.classpath
+.metadata/
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+dependency-reduced-pom.xml
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Coverage
+coverage/
+*.lcov
+.nyc_output/
+jacoco.exec
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.iml
+.DS_Store
+
+# OS
+Thumbs.db
+.directory
+
+# Test
+*.test.log
+test-results/
+
+# Build
+dist/
+build/

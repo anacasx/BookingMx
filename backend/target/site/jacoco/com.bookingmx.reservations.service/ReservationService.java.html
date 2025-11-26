@@ -11,14 +11,41 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Service class for managing hotel reservations.
- * Provides business logic for creating, updating, listing, and canceling reservations.
- * Validates reservation data and enforces business rules.
- *
- * @author BookingMx Team
- * @version 1.0
+ * Service layer for managing hotel reservations.
+ * 
+ * &lt;p&gt;This service provides business logic for the complete lifecycle of hotel
+ * reservations, including creation, modification, cancellation, and retrieval.
+ * It implements validation rules and enforces business constraints.&lt;/p&gt;
+ * 
+ * &lt;p&gt;&lt;b&gt;Business Rules:&lt;/b&gt;&lt;/p&gt;
+ * &lt;ul&gt;
+ *   &lt;li&gt;Check-out date must be after check-in date&lt;/li&gt;
+ *   &lt;li&gt;Only ACTIVE reservations can be updated&lt;/li&gt;
+ *   &lt;li&gt;Only ACTIVE reservations can be canceled&lt;/li&gt;
+ *   &lt;li&gt;Canceled reservations cannot be reactivated&lt;/li&gt;
+ * &lt;/ul&gt;
+ * 
+ * &lt;p&gt;&lt;b&gt;Usage Example:&lt;/b&gt;&lt;/p&gt;
+ * &lt;pre&gt;{@code
+ * ReservationService service = new ReservationService(repository);
+ * 
+ * ReservationRequest request = new ReservationRequest();
+ * request.setGuestName(&quot;John Doe&quot;);
+ * request.setHotelName(&quot;Grand Hotel&quot;);
+ * request.setCheckIn(LocalDate.now().plusDays(1));
+ * request.setCheckOut(LocalDate.now().plusDays(5));
+ * 
+ * Reservation reservation = service.create(request);
+ * }&lt;/pre&gt;
+ * 
+ * @author BookingMx Development Team
+ * @version 3.0.0
  * @since 2024-01-01
+ * @see Reservation
+ * @see ReservationRepository
+ * @see ReservationRequest
  */
+
 @Service
 public class ReservationService {
 
@@ -29,9 +56,9 @@ public class ReservationService {
      *
      * @param repository the reservation repository to use for data persistence
      */
-<span class="fc" id="L32">    public ReservationService(ReservationRepository repository) {</span>
-<span class="fc" id="L33">        this.repository = repository;</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L59">    public ReservationService(ReservationRepository repository) {</span>
+<span class="fc" id="L60">        this.repository = repository;</span>
+<span class="fc" id="L61">    }</span>
 
     /**
      * Retrieves all reservations from the system.
@@ -39,7 +66,7 @@ public class ReservationService {
      * @return a list of all reservations, may be empty if none exist
      */
     public List&lt;Reservation&gt; list() {
-<span class="fc" id="L42">        return repository.findAll();</span>
+<span class="fc" id="L69">        return repository.findAll();</span>
     }
 
     /**
@@ -51,16 +78,16 @@ public class ReservationService {
      * @throws BadRequestException if check-out date is not after check-in date
      */
     public Reservation create(ReservationRequest req) {
-<span class="fc" id="L54">        validateDates(req);</span>
+<span class="fc" id="L81">        validateDates(req);</span>
 
-<span class="fc" id="L56">        Reservation reservation = new Reservation();</span>
-<span class="fc" id="L57">        reservation.setGuestName(req.getGuestName());</span>
-<span class="fc" id="L58">        reservation.setHotelName(req.getHotelName());</span>
-<span class="fc" id="L59">        reservation.setCheckIn(req.getCheckIn());</span>
-<span class="fc" id="L60">        reservation.setCheckOut(req.getCheckOut());</span>
-<span class="fc" id="L61">        reservation.setStatus(ReservationStatus.ACTIVE);</span>
+<span class="fc" id="L83">        Reservation reservation = new Reservation();</span>
+<span class="fc" id="L84">        reservation.setGuestName(req.getGuestName());</span>
+<span class="fc" id="L85">        reservation.setHotelName(req.getHotelName());</span>
+<span class="fc" id="L86">        reservation.setCheckIn(req.getCheckIn());</span>
+<span class="fc" id="L87">        reservation.setCheckOut(req.getCheckOut());</span>
+<span class="fc" id="L88">        reservation.setStatus(ReservationStatus.ACTIVE);</span>
 
-<span class="fc" id="L63">        return repository.save(reservation);</span>
+<span class="fc" id="L90">        return repository.save(reservation);</span>
     }
 
     /**
@@ -74,21 +101,21 @@ public class ReservationService {
      * @throws BadRequestException if the reservation is canceled or dates are invalid
      */
     public Reservation update(Long id, ReservationRequest req) {
-<span class="fc" id="L77">        validateDates(req);</span>
+<span class="fc" id="L104">        validateDates(req);</span>
 
-<span class="fc" id="L79">        Reservation existing = repository.findById(id)</span>
-<span class="fc" id="L80">                .orElseThrow(() -&gt; new NotFoundException(&quot;Reservation not found with id: &quot; + id));</span>
+<span class="fc" id="L106">        Reservation existing = repository.findById(id)</span>
+<span class="fc" id="L107">                .orElseThrow(() -&gt; new NotFoundException(&quot;Reservation not found with id: &quot; + id));</span>
 
-<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (existing.getStatus() == ReservationStatus.CANCELED) {</span>
-<span class="fc" id="L83">            throw new BadRequestException(&quot;Cannot update a canceled reservation&quot;);</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (existing.getStatus() == ReservationStatus.CANCELED) {</span>
+<span class="fc" id="L110">            throw new BadRequestException(&quot;Cannot update a canceled reservation&quot;);</span>
         }
 
-<span class="fc" id="L86">        existing.setGuestName(req.getGuestName());</span>
-<span class="fc" id="L87">        existing.setHotelName(req.getHotelName());</span>
-<span class="fc" id="L88">        existing.setCheckIn(req.getCheckIn());</span>
-<span class="fc" id="L89">        existing.setCheckOut(req.getCheckOut());</span>
+<span class="fc" id="L113">        existing.setGuestName(req.getGuestName());</span>
+<span class="fc" id="L114">        existing.setHotelName(req.getHotelName());</span>
+<span class="fc" id="L115">        existing.setCheckIn(req.getCheckIn());</span>
+<span class="fc" id="L116">        existing.setCheckOut(req.getCheckOut());</span>
 
-<span class="fc" id="L91">        return repository.save(existing);</span>
+<span class="fc" id="L118">        return repository.save(existing);</span>
     }
 
     /**
@@ -101,15 +128,15 @@ public class ReservationService {
      * @throws BadRequestException if the reservation is already canceled
      */
     public Reservation cancel(Long id) {
-<span class="fc" id="L104">        Reservation existing = repository.findById(id)</span>
-<span class="fc" id="L105">                .orElseThrow(() -&gt; new NotFoundException(&quot;Reservation not found with id: &quot; + id));</span>
+<span class="fc" id="L131">        Reservation existing = repository.findById(id)</span>
+<span class="fc" id="L132">                .orElseThrow(() -&gt; new NotFoundException(&quot;Reservation not found with id: &quot; + id));</span>
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (existing.getStatus() == ReservationStatus.CANCELED) {</span>
-<span class="fc" id="L108">            throw new BadRequestException(&quot;Reservation is already canceled&quot;);</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (existing.getStatus() == ReservationStatus.CANCELED) {</span>
+<span class="fc" id="L135">            throw new BadRequestException(&quot;Reservation is already canceled&quot;);</span>
         }
 
-<span class="fc" id="L111">        existing.setStatus(ReservationStatus.CANCELED);</span>
-<span class="fc" id="L112">        return repository.save(existing);</span>
+<span class="fc" id="L138">        existing.setStatus(ReservationStatus.CANCELED);</span>
+<span class="fc" id="L139">        return repository.save(existing);</span>
     }
 
     /**
@@ -119,9 +146,9 @@ public class ReservationService {
      * @throws BadRequestException if check-out is not after check-in
      */
     private void validateDates(ReservationRequest req) {
-<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (!req.getCheckOut().isAfter(req.getCheckIn())) {</span>
-<span class="fc" id="L123">            throw new BadRequestException(&quot;Check-out date must be after check-in date&quot;);</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (!req.getCheckOut().isAfter(req.getCheckIn())) {</span>
+<span class="fc" id="L150">            throw new BadRequestException(&quot;Check-out date must be after check-in date&quot;);</span>
         }
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L152">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

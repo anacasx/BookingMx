@@ -11,14 +11,41 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Service class for managing hotel reservations.
- * Provides business logic for creating, updating, listing, and canceling reservations.
- * Validates reservation data and enforces business rules.
- *
- * @author BookingMx Team
- * @version 1.0
+ * Service layer for managing hotel reservations.
+ * 
+ * <p>This service provides business logic for the complete lifecycle of hotel
+ * reservations, including creation, modification, cancellation, and retrieval.
+ * It implements validation rules and enforces business constraints.</p>
+ * 
+ * <p><b>Business Rules:</b></p>
+ * <ul>
+ *   <li>Check-out date must be after check-in date</li>
+ *   <li>Only ACTIVE reservations can be updated</li>
+ *   <li>Only ACTIVE reservations can be canceled</li>
+ *   <li>Canceled reservations cannot be reactivated</li>
+ * </ul>
+ * 
+ * <p><b>Usage Example:</b></p>
+ * <pre>{@code
+ * ReservationService service = new ReservationService(repository);
+ * 
+ * ReservationRequest request = new ReservationRequest();
+ * request.setGuestName("John Doe");
+ * request.setHotelName("Grand Hotel");
+ * request.setCheckIn(LocalDate.now().plusDays(1));
+ * request.setCheckOut(LocalDate.now().plusDays(5));
+ * 
+ * Reservation reservation = service.create(request);
+ * }</pre>
+ * 
+ * @author BookingMx Development Team
+ * @version 3.0.0
  * @since 2024-01-01
+ * @see Reservation
+ * @see ReservationRepository
+ * @see ReservationRequest
  */
+
 @Service
 public class ReservationService {
 

@@ -1,5 +1,30 @@
-// Graph data structures and algorithms for nearby cities.
-// Keep functions pure for easy Jest unit testing.
+/**
+ * Graph data structures and algorithms for managing city networks.
+ * 
+ * This module provides functionality to:
+ * - Create and manage undirected graphs of cities
+ * - Calculate distances between connected cities
+ * - Find nearby cities within a specified radius
+ * - Validate graph data structures
+ * 
+ * @module graph
+ * @author BookingMx Development Team
+ * @version 3.0.0
+ * @since 2024-01-01
+ * 
+ * @example
+ * import { Graph, buildGraph, getNearbyCities } from './graph.js';
+ * 
+ * // Create a graph
+ * const graph = new Graph();
+ * graph.addCity('Guadalajara');
+ * graph.addCity('Zapopan');
+ * graph.addEdge('Guadalajara', 'Zapopan', 12);
+ * 
+ * // Find nearby cities
+ * const nearby = getNearbyCities(graph, 'Guadalajara', 50);
+ * console.log(nearby); // [{ city: 'Zapopan', distance: 12 }]
+ */
 
 export class Graph {
   constructor() {
