@@ -13,17 +13,35 @@
   </header>
 
   <main class="grid">
+    <!-- =======================
+         NEARBY CITIES SECTION
+         ======================= -->
     <section>
       <h2>Nearby Cities Graph</h2>
       <form id="graph-form">
         <label>
           Destination:
-          <input id="destination" type="text" placeholder="e.g., Guadalajara" required />
+          <input
+            id="destination"
+            name="destination"
+            type="text"
+            placeholder="e.g., Guadalajara"
+            required
+          />
         </label>
+
         <label>
           Max Distance (km):
-          <input id="maxDistance" type="number" min="0" step="1" value="250" />
+          <input
+            id="maxDistance"
+            name="maxDistance"
+            type="number"
+            min="0"
+            step="1"
+            value="250"
+          />
         </label>
+
         <button type="submit">Find Nearby</button>
       </form>
 
@@ -33,28 +51,38 @@
       </div>
     </section>
 
+    <!-- =======================
+         RESERVATIONS SECTION
+         ======================= -->
     <section>
       <h2>Reservations</h2>
+
+      <!-- CREATE RESERVATION -->
       <form id="reservation-form">
         <label>
           Guest Name:
-          <input id="guestName" required />
+          <input id="guestName" name="guestName" required />
         </label>
+
         <label>
           Hotel Name:
-          <input id="hotelName" required />
+          <input id="hotelName" name="hotelName" required />
         </label>
+
         <label>
           Check-in:
-          <input id="checkIn" type="date" required />
+          <input id="checkIn" name="checkIn" type="date" required />
         </label>
+
         <label>
           Check-out:
-          <input id="checkOut" type="date" required />
+          <input id="checkOut" name="checkOut" type="date" required />
         </label>
+
         <button type="submit">Create Reservation</button>
       </form>
 
+      <!-- LIST RESERVATIONS -->
       <div class="card">
         <h3>All Reservations</h3>
         <button id="refresh">Refresh</button>
