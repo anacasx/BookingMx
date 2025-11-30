@@ -165,8 +165,8 @@ git --version
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/bookingmx-testing.git
-cd bookingmx-testing
+git clone https://github.com/anacasx/BookingMx.git
+cd bookingmx
 ```
 
 ### 2. Backend Setup
@@ -565,4 +565,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
 - [JaCoCo Documentation](https://www.jacoco.org/jacoco/trunk/doc/)
-- [Project Repository](https://github.com/YOUR_USERNAME/bookingmx-testing)
+- [Project Repository](https://github.com/anacasx/BookingMx)
