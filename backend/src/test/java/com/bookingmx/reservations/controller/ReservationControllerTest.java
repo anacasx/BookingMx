@@ -1,7 +1,6 @@
 package com.bookingmx.reservations.controller;
 
 import com.bookingmx.reservations.dto.ReservationRequest;
-import com.bookingmx.reservations.dto.ReservationResponse;
 import com.bookingmx.reservations.model.Reservation;
 import com.bookingmx.reservations.model.ReservationStatus;
 import com.bookingmx.reservations.service.ReservationService;

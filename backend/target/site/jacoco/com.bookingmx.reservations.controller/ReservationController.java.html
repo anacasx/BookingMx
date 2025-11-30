@@ -11,42 +11,220 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST Controller for managing hotel reservations.
+ * Provides endpoints for CRUD operations on reservations.
+ * 
+ * &lt;p&gt;This controller handles HTTP requests and delegates business logic
+ * to the {@link ReservationService}. All endpoints return JSON responses.&lt;/p&gt;
+ * 
+ * &lt;p&gt;Base URL: {@code /api/reservations}&lt;/p&gt;
+ * 
+ * &lt;p&gt;CORS is enabled for localhost development on ports 5173 and 127.0.0.1:5173.&lt;/p&gt;
+ *
+ * @author BookingMx Team
+ * @version 1.0
+ * @since 2024-01-01
+ * @see ReservationService
+ * @see ReservationRequest
+ * @see ReservationResponse
+ */
 @RestController
 @CrossOrigin(origins = {&quot;http://localhost:5173&quot;, &quot;http://127.0.0.1:5173&quot;, &quot;*&quot;})
 @RequestMapping(value = &quot;/api/reservations&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ReservationController {
 
+    /**
+     * Service layer for reservation business logic.
+     */
     private final ReservationService service;
 
-<span class="fc" id="L21">    public ReservationController(ReservationService service) {</span>
-<span class="fc" id="L22">        this.service = service;</span>
-<span class="fc" id="L23">    }</span>
+    /**
+     * Constructs a ReservationController with the required service dependency.
+     * 
+     * @param service the reservation service to handle business operations
+     */
+<span class="fc" id="L47">    public ReservationController(ReservationService service) {</span>
+<span class="fc" id="L48">        this.service = service;</span>
+<span class="fc" id="L49">    }</span>
 
+    /**
+     * Retrieves all reservations in the system.
+     * 
+     * &lt;p&gt;This endpoint returns a list of all reservations regardless of status.
+     * The list will be empty if no reservations exist.&lt;/p&gt;
+     * 
+     * &lt;p&gt;&lt;strong&gt;Example Request:&lt;/strong&gt;&lt;/p&gt;
+     * &lt;pre&gt;
+     * GET /api/reservations
+     * &lt;/pre&gt;
+     * 
+     * &lt;p&gt;&lt;strong&gt;Example Response:&lt;/strong&gt;&lt;/p&gt;
+     * &lt;pre&gt;
+     * [
+     *   {
+     *     &quot;id&quot;: 1,
+     *     &quot;guestName&quot;: &quot;John Doe&quot;,
+     *     &quot;hotelName&quot;: &quot;Grand Hotel&quot;,
+     *     &quot;checkIn&quot;: &quot;2024-12-01&quot;,
+     *     &quot;checkOut&quot;: &quot;2024-12-05&quot;,
+     *     &quot;status&quot;: &quot;ACTIVE&quot;
+     *   }
+     * ]
+     * &lt;/pre&gt;
+     *
+     * @return a list of all reservations as {@link ReservationResponse} objects
+     */
     @GetMapping
     public List&lt;ReservationResponse&gt; list() {
-<span class="fc" id="L27">        return service.list().stream()</span>
-<span class="fc" id="L28">                .map(this::toResponse)</span>
-<span class="fc" id="L29">                .toList();</span>
+<span class="fc" id="L80">        return service.list().stream()</span>
+<span class="fc" id="L81">                .map(this::toResponse)</span>
+<span class="fc" id="L82">                .toList();</span>
     }
 
+    /**
+     * Creates a new reservation with the provided details.
+     * 
+     * &lt;p&gt;Validates the request data using Bean Validation annotations.
+     * The check-in and check-out dates must be in the future, and
+     * check-out must be after check-in.&lt;/p&gt;
+     * 
+     * &lt;p&gt;&lt;strong&gt;Example Request:&lt;/strong&gt;&lt;/p&gt;
+     * &lt;pre&gt;
+     * POST /api/reservations
+     * Content-Type: application/json
+     * 
+     * {
+     *   &quot;guestName&quot;: &quot;John Doe&quot;,
+     *   &quot;hotelName&quot;: &quot;Grand Hotel&quot;,
+     *   &quot;checkIn&quot;: &quot;2024-12-01&quot;,
+     *   &quot;checkOut&quot;: &quot;2024-12-05&quot;
+     * }
+     * &lt;/pre&gt;
+     * 
+     * &lt;p&gt;&lt;strong&gt;Example Response:&lt;/strong&gt;&lt;/p&gt;
+     * &lt;pre&gt;
+     * {
+     *   &quot;id&quot;: 1,
+     *   &quot;guestName&quot;: &quot;John Doe&quot;,
+     *   &quot;hotelName&quot;: &quot;Grand Hotel&quot;,
+     *   &quot;checkIn&quot;: &quot;2024-12-01&quot;,
+     *   &quot;checkOut&quot;: &quot;2024-12-05&quot;,
+     *   &quot;status&quot;: &quot;ACTIVE&quot;
+     * }
+     * &lt;/pre&gt;
+     *
+     * @param req the reservation request containing guest and hotel details
+     * @return the created reservation with generated ID and ACTIVE status
+     * @throws com.bookingmx.reservations.exception.BadRequestException 
+     *         if validation fails or business rules are violated
+     */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ReservationResponse create(@Valid @RequestBody ReservationRequest req) {
-<span class="fc" id="L34">        return toResponse(service.create(req));</span>
+<span class="fc" id="L124">        return toResponse(service.create(req));</span>
     }
 
+    /**
+     * Updates an existing reservation with new details.
+     * 
+     * &lt;p&gt;Only active reservations can be updated. Canceled reservations
+     * cannot be modified. All fields in the request will replace the
+     * existing values.&lt;/p&gt;
+     * 
+     * &lt;p&gt;&lt;strong&gt;Example Request:&lt;/strong&gt;&lt;/p&gt;
+     * &lt;pre&gt;
+     * PUT /api/reservations/1
+     * Content-Type: application/json
+     * 
+     * {
+     *   &quot;guestName&quot;: &quot;John Doe Updated&quot;,
+     *   &quot;hotelName&quot;: &quot;Grand Hotel&quot;,
+     *   &quot;checkIn&quot;: &quot;2024-12-01&quot;,
+     *   &quot;checkOut&quot;: &quot;2024-12-06&quot;
+     * }
+     * &lt;/pre&gt;
+     * 
+     * &lt;p&gt;&lt;strong&gt;Example Response:&lt;/strong&gt;&lt;/p&gt;
+     * &lt;pre&gt;
+     * {
+     *   &quot;id&quot;: 1,
+     *   &quot;guestName&quot;: &quot;John Doe Updated&quot;,
+     *   &quot;hotelName&quot;: &quot;Grand Hotel&quot;,
+     *   &quot;checkIn&quot;: &quot;2024-12-01&quot;,
+     *   &quot;checkOut&quot;: &quot;2024-12-06&quot;,
+     *   &quot;status&quot;: &quot;ACTIVE&quot;
+     * }
+     * &lt;/pre&gt;
+     *
+     * @param id the ID of the reservation to update
+     * @param req the updated reservation details
+     * @return the updated reservation
+     * @throws com.bookingmx.reservations.exception.NotFoundException 
+     *         if no reservation exists with the given ID
+     * @throws com.bookingmx.reservations.exception.BadRequestException 
+     *         if the reservation is canceled or validation fails
+     */
     @PutMapping(value = &quot;/{id}&quot;, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ReservationResponse update(@PathVariable(&quot;id&quot;) Long id, @Valid @RequestBody ReservationRequest req) {
-<span class="fc" id="L39">        return toResponse(service.update(id, req));</span>
+<span class="fc" id="L169">        return toResponse(service.update(id, req));</span>
     }
 
+    /**
+     * Cancels an existing reservation.
+     * 
+     * &lt;p&gt;Sets the reservation status to CANCELED. This operation is
+     * idempotent but will throw an exception if the reservation is
+     * already canceled.&lt;/p&gt;
+     * 
+     * &lt;p&gt;The reservation data is not deleted; only the status changes.
+     * This allows for audit trail and historical data preservation.&lt;/p&gt;
+     * 
+     * &lt;p&gt;&lt;strong&gt;Example Request:&lt;/strong&gt;&lt;/p&gt;
+     * &lt;pre&gt;
+     * DELETE /api/reservations/1
+     * &lt;/pre&gt;
+     * 
+     * &lt;p&gt;&lt;strong&gt;Example Response:&lt;/strong&gt;&lt;/p&gt;
+     * &lt;pre&gt;
+     * {
+     *   &quot;id&quot;: 1,
+     *   &quot;guestName&quot;: &quot;John Doe&quot;,
+     *   &quot;hotelName&quot;: &quot;Grand Hotel&quot;,
+     *   &quot;checkIn&quot;: &quot;2024-12-01&quot;,
+     *   &quot;checkOut&quot;: &quot;2024-12-05&quot;,
+     *   &quot;status&quot;: &quot;CANCELED&quot;
+     * }
+     * &lt;/pre&gt;
+     *
+     * @param id the ID of the reservation to cancel
+     * @return the canceled reservation with CANCELED status
+     * @throws com.bookingmx.reservations.exception.NotFoundException 
+     *         if no reservation exists with the given ID
+     * @throws com.bookingmx.reservations.exception.BadRequestException 
+     *         if the reservation is already canceled
+     */
     @DeleteMapping(&quot;/{id}&quot;)
     public ReservationResponse cancel(@PathVariable(&quot;id&quot;) Long id) {
-<span class="fc" id="L44">        return toResponse(service.cancel(id));</span>
+<span class="fc" id="L208">        return toResponse(service.cancel(id));</span>
     }
 
+    /**
+     * Converts a Reservation entity to a ReservationResponse DTO.
+     * 
+     * &lt;p&gt;This private helper method transforms the domain model into
+     * the API response format, hiding internal implementation details.&lt;/p&gt;
+     *
+     * @param r the reservation entity to convert
+     * @return a ReservationResponse DTO with the same data
+     */
     private ReservationResponse toResponse(Reservation r) {
-<span class="fc" id="L48">        return new ReservationResponse(</span>
-<span class="fc" id="L49">                r.getId(), r.getGuestName(), r.getHotelName(), r.getCheckIn(), r.getCheckOut(), r.getStatus()</span>
+<span class="fc" id="L221">        return new ReservationResponse(</span>
+<span class="fc" id="L222">                r.getId(), </span>
+<span class="fc" id="L223">                r.getGuestName(), </span>
+<span class="fc" id="L224">                r.getHotelName(), </span>
+<span class="fc" id="L225">                r.getCheckIn(), </span>
+<span class="fc" id="L226">                r.getCheckOut(), </span>
+<span class="fc" id="L227">                r.getStatus()</span>
         );
     }
 }

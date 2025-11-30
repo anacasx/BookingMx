@@ -23,7 +23,6 @@
 - [Sprint Progress](#sprint-progress)
 - [Contributing](#contributing)
 - [License](#license)
-- [Authors](#authors)
 
 ---
 
@@ -567,13 +566,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
 - [JaCoCo Documentation](https://www.jacoco.org/jacoco/trunk/doc/)
 - [Project Repository](https://github.com/YOUR_USERNAME/bookingmx-testing)
-
----
-
-<div align="center">
-
-**⭐ If you found this project helpful, please give it a star!**
-
-Made with ❤️ by the BookingMx Team
-
-</div>

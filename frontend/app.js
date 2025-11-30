@@ -7,8 +7,8 @@
  * @version 1.0
  */
 
-import { listReservations, createReservation, cancelReservation } from './api.js';
-import { buildGraph, getNearbyCities, sampleData } from './graph.js';
+import { listReservations, createReservation, cancelReservation } from './js/api.js';
+import { buildGraph, getNearbyCities, sampleData } from './js/graph.js';
 
 // Initialize graph on page load
 let cityGraph;
